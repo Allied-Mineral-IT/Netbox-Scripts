@@ -1,5 +1,5 @@
 from extras.scripts import *
-from dcim.models import Device, Interface
+from dcim.models import Sites, Device, Interface
 from ipam.models import VLAN, VLANGroup
 from dcim.choices import InterfaceModeChoices
 from jinja2 import Template
@@ -171,4 +171,5 @@ class UpdateInterfaceScript(Script):
         rendered_output = template.render(interfaces=interfaces)
 
         # Output the rendered configuration inside a code block
+
         self.log_info(f"Generated Interface Configuration:\n{rendered_output}")
