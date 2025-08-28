@@ -1,5 +1,5 @@
 from extras.scripts import *
-from dcim.models import Sites, Device, Interface
+from dcim.models import Site, Device, Interface
 from ipam.models import VLAN, VLANGroup
 from dcim.choices import InterfaceModeChoices
 from jinja2 import Template
@@ -21,10 +21,7 @@ class UpdateInterfaceScript(Script):
     device = ObjectVar(
         model=Device,
         label="Device",
-        query_params={
-            "status": "active",
-            "role_id": "1"
-        },
+        query_params={"site_id": "$site", "status": "active", "role_id": "1"},
         description="Select the device you want to update interfaces for"
     )
     interfaces = MultiObjectVar(
@@ -47,7 +44,7 @@ class UpdateInterfaceScript(Script):
     vlan_group = ObjectVar(
         model=VLANGroup,
         label="VLAN Group",
-        query_params={"site_id": "$site"},
+        default={"site_id": "$site"},
         required=False,
         description="Select the VLAN Group (optional)"
     )
@@ -171,5 +168,4 @@ class UpdateInterfaceScript(Script):
         rendered_output = template.render(interfaces=interfaces)
 
         # Output the rendered configuration inside a code block
-
         self.log_info(f"Generated Interface Configuration:\n{rendered_output}")
